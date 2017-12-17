@@ -22,22 +22,23 @@ abstract class Parser
         if ($this->data instanceof Model) {
             return $this->parseIt($this->data);
         } else if ($this->data instanceof EloquentCollection) {
-            $data = $this->data->transform(function ($model, $key) {
-                $this->parseIt($model);
+            $data = $this->data->map(function ($model, $key) {
+                $model = $this->parseIt($model);
                 return $model;
             });
             return $data;
         } else if ($this->data instanceof LengthAwarePaginator) {
-            return $this->data->setCollection($data);
+            $paginator = clone $this->data;
+            $data = $paginator->map(function ($model, $key) {
+                $model = $this->parseIt($model);
+                return $model;
+            });
+            return $paginator->setCollection($data);
         }
     }
 
     public function parseIt($model)
     {
-        // We dont want to mutate the actual object
-        // betteer replicate for immutable data 
-        // Here enumparser shines 
-        // because mutator actually mutates the object :)
         $immutable = clone $model;
         $attributes = $immutable->getAttributes();
         // Parse the attributes for enum results

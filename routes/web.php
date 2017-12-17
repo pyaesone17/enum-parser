@@ -11,10 +11,23 @@
 |
 */
 
+Route::domain('api.enum-parser.test')->group(function () {
+    Route::get('/{folder}/{file}',function ($folder, $file){
+        $folder = ucfirst($folder);
+        $file = ucfirst($file);
+        $user = request()->user();
+        
+        $resource = "App\\Http\\Resources\\".$folder."\\".$file;
+        return response( new $resource($user) );
+    });
+});
+
+
 
 Route::get('/', function () {
     return view('welcome');
 });
+
 
 Route::group([ 'middleware' => 'auth'],function (){
     Route::get('/object/show',function (){
@@ -22,7 +35,7 @@ Route::group([ 'middleware' => 'auth'],function (){
         $user->load('identity');
 
         $parsedUser = (new App\EnumParser\ProfileParser($user))->parse();
-        // dd($parsedUser,$user);
+        // dd($parsedUser->toArray(),$user->toArray());
         return view('object.show',compact('parsedUser'));
     });
     Route::resource('/profile','ProfileController');
@@ -43,13 +56,19 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::domain('api.enum-parser.test')->group(function () {
-    Route::get('/{folder}/{file}',function ($folder, $file){
-        $folder = ucfirst($folder);
-        $file = ucfirst($file);
-        $user = request()->user();
-        
-        $resource = "App\\Http\\Resources\\".$folder."\\".$file;
-        return response( new $resource($user) );
+Route::group([ 'middleware' => 'auth'],function (){
+    Route::get('/users',function (){
+        $users = App\User::get();
+        $parsedUser = (new App\EnumParser\ProfileParser($users))->parse();
+        return $parsedUser;
+    });
+});
+
+
+Route::group([ 'middleware' => 'auth'],function (){
+    Route::get('/users-pagination',function (){
+        $users = App\User::paginate();
+        $parsedUsers = (new App\EnumParser\ProfileParser($users))->parse();
+        return $parsedUsers;
     });
 });

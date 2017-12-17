@@ -2,9 +2,9 @@
 
 return [
     'status' => [
-        'AVAILABLE' => 'Actively looking for a new job', 
+        'AVAILABLE' => 'Actively looking for jobs', 
         'NOT_AVAILABLE' => 'Not interested to find jobs', 
-        'NEW_JOB' => 'Currently have a job but looking for new job'
+        'NEW_JOB' => 'Currently have a job but looking for new job',
     ],
     'experience_level' => [
         'INTERN' => 'Intern Level', 
@@ -15,7 +15,8 @@ return [
     'working_type' => [
         'FREELANCE' => 'Freelance Developer', 
         'FULLTIME' => 'Fulltime Developer', 
-        'REMOTE' => 'Remote Developer'
+        'REMOTE' => 'Remote Developer',
+        'CONTRACT' => 'Contract Developer'
     ],
     'education_level' => [
         'BACHELOR' => 'Bachelor', 

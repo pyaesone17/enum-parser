@@ -10,6 +10,7 @@ use App\Enums\EducationLevel;
 
 class ProfileParser extends Parser
 {
+    //colum name , value enum object
     protected $rules = [
         'experience_level' => ExperienceLevel::class,
         'education_level' => EducationLevel::class,
@@ -17,6 +18,7 @@ class ProfileParser extends Parser
         'status' => Status::class
     ];
 
+    //column nam e relation, value parser
     protected $parseRelations = [
         'identity' => IdentityParser::class
     ];
