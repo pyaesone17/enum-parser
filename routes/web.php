@@ -11,16 +11,6 @@
 |
 */
 
-Route::domain('api.enum-parser.test')->group(function () {
-    Route::get('/{folder}/{file}',function ($folder, $file){
-        $folder = ucfirst($folder);
-        $file = ucfirst($file);
-        $user = request()->user();
-        
-        $resource = "App\\Http\\Resources\\".$folder."\\".$file;
-        return response( new $resource($user) );
-    });
-});
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,6 +29,9 @@ Route::group([ 'middleware' => 'auth'],function (){
 });
 
 
+// Route for just showing view file 
+// eg: /array/show.blade.php
+// object/show.blade.php
 Route::group([ 'middleware' => 'auth'],function (){
     Route::get('/{folder}/{file}',function ($folder, $file){
         return view($folder.'.'.$file);
@@ -50,3 +43,13 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::domain('api.enum-parser.test')->group(function () {
+    Route::get('/{folder}/{file}',function ($folder, $file){
+        $folder = ucfirst($folder);
+        $file = ucfirst($file);
+        $user = request()->user();
+        
+        $resource = "App\\Http\\Resources\\".$folder."\\".$file;
+        return response( new $resource($user) );
+    });
+});

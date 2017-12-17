@@ -23,7 +23,7 @@
 
             @if(request()->is('array*'))
                 body{
-                    background: white;
+                    background: black;
                 }
             @elseif(request()->is('object*'))
                 body{
